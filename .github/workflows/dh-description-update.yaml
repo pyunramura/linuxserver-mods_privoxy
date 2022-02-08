@@ -1,0 +1,25 @@
+---
+name: Update Dockerhub Description
+# From: https://github.com/peter-evans/dockerhub-description
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '*.md'
+    branches: [main]
+env:
+  APP: privoxy
+jobs:
+  update:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - name: Update repo description
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APP }}
+          short-description: ${{ github.event.repository.description }}
+          readme-filepath: ./README.md
