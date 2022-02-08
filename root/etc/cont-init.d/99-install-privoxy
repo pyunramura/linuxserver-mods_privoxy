@@ -1,0 +1,12 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+apk add --no-cache \
+    privoxy
+
+if [[ ! -f "/config/privoxy/privoxy.conf" ]]; then
+    echo "[cont-init.d] Installing default \"privoxy.conf\""
+    mkdir -p "/config/privoxy"
+    cp "/defaults/privoxy/privoxy.conf" "/config/privoxy/privoxy.conf"
+    chown abc:abc -R "/config/privoxy"
+fi
